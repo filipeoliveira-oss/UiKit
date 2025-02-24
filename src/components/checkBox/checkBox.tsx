@@ -8,12 +8,13 @@ interface props {
 	falseAccentColor?: string,
 	trueAccentColor?: string,
 	disabledAnimation?: boolean,
-	animationDuration?: number
+	animationDuration?: number,
+	size?:number
 }
 
 
 const checkboxVariants = tv({
-	base: 'w-8 h-8 border border-zinc-400 cursor-pointer flex flex-row gap-2 items-center justify-center',
+	base: ' border border-zinc-400 cursor-pointer flex flex-row gap-2 items-center justify-center',
 	variants: {
 		format: {
 			square: 'rounded-md',
@@ -33,7 +34,7 @@ type checkboxType = ComponentProps<'div'> & props & VariantProps<typeof checkbox
 
 
 const Checkbox = forwardRef<HTMLDivElement, checkboxType>(
-	({ className, setValue, value, format, falseAccentColor = '#FE0000', trueAccentColor = '#00CC44', disabledAnimation = false, animationDuration = 0.5 }, ref) => {
+	({ className, setValue, value, format, falseAccentColor = '#FE0000', trueAccentColor = '#00CC44', disabledAnimation = false, animationDuration = 0.5, size=32 }, ref) => {
 
 
 		const animation = {
@@ -71,9 +72,13 @@ const Checkbox = forwardRef<HTMLDivElement, checkboxType>(
 			)
 		}
 
+		const style = {
+			width:`${size}px`,
+			height:`${size}px`
+		}
 
 		return (
-			<div ref={ref} className={checkboxVariants({ format, className })} onClick={() => setValue((prev: boolean) => !prev)}>
+			<div ref={ref} className={checkboxVariants({ format, className:`${className}` })} onClick={() => setValue((prev: boolean) => !prev)} style={style}>
 				{value === true ? <Check /> : <X />}
 			</div>
 		)
