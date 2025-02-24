@@ -1,8 +1,6 @@
-import { clsx, type ClassValue } from "clsx"
-import { ComponentProps, forwardRef, useRef } from "react"
-import { twMerge } from "tailwind-merge"
+import { ComponentProps, forwardRef } from "react"
 import { tv, VariantProps } from "tailwind-variants"
-import { motion, MotionConfig } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 
 
@@ -30,9 +28,6 @@ const checkboxVariants = tv({
 	}
 })
 
-function cn(...inputs: ClassValue[]) {
-	return twMerge(clsx(inputs))
-}
 
 type checkboxType = ComponentProps<'div'> & props & VariantProps<typeof checkboxVariants>
 
