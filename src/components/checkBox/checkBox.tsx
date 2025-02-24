@@ -2,8 +2,6 @@ import { ComponentProps, forwardRef } from "react"
 import { tv, VariantProps } from "tailwind-variants"
 import { motion } from 'framer-motion'
 
-
-
 interface props {
 	value: boolean,
 	setValue: (e: boolean | ((prev: boolean) => boolean)) => void,
