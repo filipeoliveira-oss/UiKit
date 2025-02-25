@@ -1,6 +1,7 @@
 import Cards from "./componets/cards";
 import Compatibility from "./pageElemets/compatibility";
 import Control from "./pageElemets/control";
+import Footer from "./pageElemets/footer";
 import HeroHeader from "./pageElemets/heroHeader";
 
 export default function App() {
@@ -18,6 +19,8 @@ export default function App() {
 			<Compatibility/>
 
 			<Control/>
+
+			<Footer/>
 		</div>
 	)
 }

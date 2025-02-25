@@ -26,7 +26,7 @@ export default function Control(){
 
     function ColorSelector({color} : {color:colors}){
         return(
-            <div className="cursor-pointer h-6 w-6 border-0 rounded-md" style={{backgroundColor:color}} onClick={() => handleChangeColor(color)}></div>
+            <div className="cursor-pointer h-6 w-6 border-0 rounded-md" style={{backgroundColor:color}} onClick={() => setSelectedColor(color)}></div>
         )
     }
 
@@ -46,7 +46,7 @@ export default function Control(){
                 <div className="w-full h-12 flex flex-row gap-2 mt-8  items-center">
                     <div className="w-fit h-fit flex flex-row gap-4">
                         <span className="text-zinc-300 w-[80%] text-lg">Primary color:</span>
-                        <input className={`w-32 h-8 border-2 outline-none rounded-lg text-white px-2`} style={{borderColor:selectedColor}} value={selectedColor} onChange={(e) => handleChangeColor(e.target.value as unknown as colors)}/>
+                        <input className={`w-32 h-8 border-2 outline-none rounded-lg text-white px-2`} style={{borderColor:selectedColor}} value={selectedColor} onChange={(e) => setSelectedColor(e.target.value as unknown as colors)}/>
                     </div>
                     
                     <ColorSelector color="#1677FF"/>
