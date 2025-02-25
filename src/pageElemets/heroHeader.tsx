@@ -1,4 +1,4 @@
-import { ArrowRight,  Copy, Terminal } from "lucide-react";
+import { ArrowRight, Copy, Terminal } from "lucide-react";
 import { Button } from "../uiKit/button/button";
 import { Tooltip } from "../uiKit/tooltip/tooltip";
 import { useState } from "react";
@@ -8,7 +8,7 @@ export default function HeroHeader() {
 
 	const [copied, setCopied] = useState(false)
 
-    const animation = {
+	const animation = {
 		hidden: {
 			pathLength: 0,
 			opacity: 1,
@@ -43,30 +43,33 @@ export default function HeroHeader() {
 		)
 	}
 
-    return (
-        <div className="w-full h-[70dvh] border border-zinc-300 flex items-center justify-between">
-            <div className="w-1/2 h-full flex flex-col justify-center border ">
-                <span className="text-white px-2 text-5xl w-full leading-snug">Accelerate your React projects with flexible, </span> <br />
-                <span className="text-white px-2 text-5xl w-fit leading-snug bg-violet-500/30 border-r-4 border-r-violet-500 -translate-y-4">ready-to-use boilerplates</span> <br />
-                <span className="text-zinc-300 w-[80%] text-lg">Pre-built React boilerplates designed for speed, flexibility, and seamless integration into your projects.</span>
+	return (
+		<div className="w-full h-[70dvh] flex items-center justify-between">
+			<div className="w-1/2 h-full flex flex-col justify-center border ">
+				<span className="text-white px-2 text-5xl w-full leading-snug">Accelerate your React projects with flexible, </span> <br />
+				<span className="text-white px-2 text-5xl w-fit leading-snug bg-violet-500/30 border-r-4 border-r-violet-500 -translate-y-4">ready-to-use boilerplates</span> <br />
+				<span className="text-zinc-300 w-[80%] text-lg">Pre-built React boilerplates designed for speed, flexibility, and seamless integration into your projects.</span>
 
-                <div className="w-full h-fit flex flex-row gap-4 mt-8">
-                    <Button className="rounded-full">Get started <ArrowRight /> </Button>
-                    <div className="w-fit h-full border border-zinc-800 text-violet-500 flex flex-row items-center justify-center px-4 gap-4 rounded-full bg-zinc-900">
-                        <Terminal size={18} />
-                        <span>npx fouikit </span>
-                        {copied ?
-                            <Check />
-                            :
-                            <Tooltip content="Copy to clipboard" className="bg-zinc-900 border-none px-2 text-zinc-300">
-                                <Copy size={18} className="cursor-pointer" onClick={() => handleCopy()} />
-                            </Tooltip>
-                        }
-                    </div>
-                </div>
-            </div>
+				<div className="w-full h-fit flex flex-row gap-4 mt-8">
+					<Button className="rounded-full">Get started <ArrowRight /> </Button>
+					<div className=" w-fit h-full border border-zinc-800 text-violet-500 flex flex-row items-center justify-center px-4 gap-4 rounded-full bg-zinc-900">
+						<Terminal size={18} className="text-violet-500" />
+						<span>npx fouikit</span>
+						<div className="w-[18px] h-full">
+							{copied ?
+								<Check />
+								:
+								<Tooltip content="Copy to clipboard" className="bg-zinc-900 border-none px-2 text-zinc-300">
+									<Copy size={18} className="cursor-pointer" onClick={() => handleCopy()} />
+								</Tooltip>
+							}
+						</div>
 
-            <img src="./UiKitMain.png" alt="Main Image from FO UI Kit" className="w-1/2 h-auto" />
-        </div>
-    )
+					</div>
+				</div>
+			</div>
+
+			<img src="./UiKitMain.png" alt="Main Image from FO UI Kit" className="w-1/2 h-auto" />
+		</div>
+	)
 }
