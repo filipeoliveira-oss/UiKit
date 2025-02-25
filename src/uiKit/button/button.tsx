@@ -18,8 +18,8 @@ const button = tv({
     },
 
     active:{
-      disabled:'bg-violet-500/50 opacity-60 pointer-events-none',
-      enabled:''
+      disabled:'bg-violet-500/50 opacity-60 pointer-events-none cursor-auto',
+      enabled:'cursor-pointer'
     }
   },
 
