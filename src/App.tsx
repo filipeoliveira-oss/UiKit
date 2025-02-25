@@ -1,10 +1,10 @@
 function App() {
 
-  return (
-    <div>
-      this is the main page
-    </div>
-  )
+	return (
+		<div className="w-dvw h-dvh bg-black flex">
+			
+		</div>
+	)
 }
 
 export default App
