@@ -52,7 +52,7 @@ export default function HeroHeader() {
 
                 <div className="w-full h-fit flex flex-row gap-4 mt-8">
                     <Button className="rounded-full">Get started <ArrowRight /> </Button>
-                    <div className="w-fit h-full border border-zinc-800 text-violet-500 flex items-center justify-center px-4 gap-4 rounded-full bg-zinc-900">
+                    <div className="w-fit h-full border border-zinc-800 text-violet-500 flex flex-row items-center justify-center px-4 gap-4 rounded-full bg-zinc-900">
                         <Terminal size={18} />
                         <span>npx fouikit </span>
                         {copied ?

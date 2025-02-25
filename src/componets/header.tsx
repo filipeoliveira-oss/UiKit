@@ -1,6 +1,6 @@
 export default function Header(){
     return(
-        <div className="w-full h-12 border flex fixed flex-row px-[13%] justify-between items-center bg-black">
+        <div className="h-12  border flex fixed flex-row px-[13%] justify-between items-center bg-black" style={{ width: 'calc(100vw - 17px)' }}>
             <h1 className="text-zinc-100 cursor-pointer text-3xl font-light">UI Kit</h1>
 
             <div className="flex flex-row gap-4">

@@ -75,7 +75,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipType>(
 
 
         return (
-            <div ref={ref} className={"flex items-center justify-center w-fit h-fit relative "} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div ref={ref} className={"flex items-center justify-center w-full h-full relative "} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 {children}
 
                 <motion.div className={TooltipVariant({ placement, className:  `${className}` })} variants={tooltip} initial='closed' animate={showTooltip ? 'open' : 'closed'}>
