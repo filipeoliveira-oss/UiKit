@@ -2,17 +2,29 @@ import { ComponentProps, forwardRef, useState,useRef } from "react";
 import { tv, type VariantProps } from 'tailwind-variants'
 import { motion } from 'framer-motion'
 
+type RGB = `rgb(${number}, ${number}, ${number})`;
+type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
+type HEX = `#${string}`;
+type HSL = `hsl(${number}, ${number}%, ${number}%)`;
+type HSLA = `hsla(${number}, ${number}%, ${number}%, ${number})`;
+type OKLCH = `oklch(${number} ${number} ${number})`;
+type OKLAB = `oklab(${number} ${number} ${number})`;
+type CMYK = `cmyk(${number}%, ${number}%, ${number}%, ${number}%)`;
+
+type colors = RGB | RGBA | HEX | HSL | HSLA | OKLCH | OKLAB | CMYK ;
+
 interface Itooltip {
     children: React.ReactNode,
     content: string,
     offset?: number,
     delayOpen?: number,
-    delayHide?: number
+    delayHide?: number,
+    backgroundColor?:colors
 }
 
 
 const TooltipVariant = tv({
-    base: 'flex items-center justify-center w-fit h-fit absolute bg-white shadow-lg border border-zinc-100 p-1 rounded-sm z-50',
+    base: 'flex items-center justify-center w-fit h-fit absolute bg-white shadow-lg p-1 rounded-sm z-50',
 
     variants: {
         placement: {
@@ -39,8 +51,31 @@ const TooltipVariant = tv({
 
 type TooltipType = ComponentProps<'div'> & Itooltip & VariantProps<typeof TooltipVariant>
 
+const isValidColor = (color: string): boolean => {
+	// Regex patterns for different color formats
+	const hexPattern = /^#([0-9A-Fa-f]{3,8})$/;
+	const rgbPattern = /^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/;
+	const rgbaPattern = /^rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*(0(\.\d+)?|1(\.0+)?)\s*\)$/;
+	const hslPattern = /^hsl\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*\)$/;
+	const hslaPattern = /^hsla\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*,\s*(0(\.\d+)?|1(\.0+)?)\s*\)$/;
+	const oklchPattern = /^oklch\(\s*\d+(\.\d+)?\s+\d+(\.\d+)?\s+\d+(\.\d+)?\s*\)$/;
+	const oklabPattern = /^oklab\(\s*\d+(\.\d+)?\s+\d+(\.\d+)?\s+\d+(\.\d+)?\s*\)$/;
+	const cmykPattern = /^cmyk\(\s*\d+%?\s*,\s*\d+%?\s*,\s*\d+%?\s*,\s*\d+%?\s*\)$/;
+	// Validate color
+	return (
+	  hexPattern.test(color) ||
+	  rgbPattern.test(color) ||
+	  rgbaPattern.test(color) ||
+	  hslPattern.test(color) ||
+	  hslaPattern.test(color) ||
+	  oklchPattern.test(color) ||
+	  oklabPattern.test(color) ||
+	  cmykPattern.test(color) 
+	);
+  };
+
 export const Tooltip = forwardRef<HTMLDivElement, TooltipType>(
-    ({ className, children, placement = 'top-start', delayOpen = 150, delayHide = 150, content, ...props }, ref) => {
+    ({ className, children, placement = 'top-start', delayOpen = 150, delayHide = 150, content,backgroundColor='#ffffff', ...props }, ref) => {
 
         const [showTooltip, setShowTooltip] = useState(false)
 
@@ -78,7 +113,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipType>(
             <div ref={ref} className={"flex items-center justify-center w-full h-full relative "} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 {children}
 
-                <motion.div className={TooltipVariant({ placement, className:  `${className}` })} variants={tooltip} initial='closed' animate={showTooltip ? 'open' : 'closed'}>
+                <motion.div className={TooltipVariant({ placement, className })} style={{backgroundColor:isValidColor(backgroundColor) ? backgroundColor : '#ffffff'}} variants={tooltip} initial='closed' animate={showTooltip ? 'open' : 'closed'}>
                     <span className="whitespace-nowrap">{content}</span>
                 </motion.div>
             </div>
