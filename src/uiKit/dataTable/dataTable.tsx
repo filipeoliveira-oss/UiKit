@@ -1,10 +1,28 @@
-import React from "react";
-import { AgGridReact } from "ag-grid-react";
-import { ComponentProps, forwardRef, Ref } from "react";
+import { CellClickedEvent, CellEditingStoppedEvent, CheckboxEditorModule, ClientSideRowModelModule, ColDef, CustomFilterModule, DateFilterModule, LocaleModule, ModuleRegistry, NumberFilterModule, PaginationModule, RowClickedEvent, RowStyleModule, TextEditorModule, TextFilterModule, themeQuartz, TooltipModule, ValidationModule } from 'ag-grid-community';
+import { AgGridReact, CustomCellRendererProps } from "ag-grid-react";
+import React, { ComponentProps, forwardRef, memo, Ref } from "react";
 import { tv, VariantProps } from "tailwind-variants";
-import { CellEditingStoppedEvent, RowClickedEvent, themeQuartz, ModuleRegistry } from 'ag-grid-community';
-import { ClientSideRowModelModule, PaginationModule, NumberFilterModule, TextFilterModule, LocaleModule, RowStyleModule, CheckboxEditorModule, ValidationModule, DateFilterModule, } from 'ag-grid-community';
-ModuleRegistry.registerModules([ClientSideRowModelModule, PaginationModule, NumberFilterModule, TextFilterModule, LocaleModule, CheckboxEditorModule, RowStyleModule, ValidationModule, DateFilterModule,]);
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+ModuleRegistry.registerModules([
+    ClientSideRowModelModule,
+    PaginationModule,
+    NumberFilterModule,
+    TextFilterModule,
+    LocaleModule,
+    CheckboxEditorModule,
+    RowStyleModule,
+    ValidationModule,
+    DateFilterModule,
+    TextEditorModule,
+    TooltipModule,
+    CustomFilterModule
+]);
 
 const AG_GRID_LOCALE_BR = {
     localeText: {
@@ -619,14 +637,15 @@ const AG_GRID_LOCALE_BR = {
         timeFormatHHMMSSAmPm: "HH:MM:SS AM/PM",
     },
 };
-interface DataTableColumnDefinition {
+
+export interface DataTableColumnDefinition extends ColDef {
     field: string,
     headerName: string,
     flex: number,
-    filter: boolean,
+    filter: boolean | any,
     floatingFilter: boolean,
     resizable: boolean,
-    cellRenderer?: (params: any) => React.ReactNode
+    cellRenderer?: (params: CustomCellRendererProps) => React.ReactNode
     cellStyle?: React.CSSProperties | any,
     onCellDoubleClicked?: any,
     onCellClicked?: any,
@@ -635,18 +654,20 @@ interface DataTableColumnDefinition {
     tooltipValueGetter?: (p: any) => string,
     hide?: boolean,
     onCellValueChanged?: (event: any) => void,
-    filterParams?: { filterPlaceholder: string },
+    filterParams?: { filterPlaceholder?: string, options?:Array<string>, valueMapper?:Array<string> },
     floatingFilterComponent?: any,
     cellEditor?: ({ value, onValueChange }: any) => Element | React.JSX.Element,
     minWidth?: number
     sort?: 'asc' | 'desc',
-    sortedAt?: number
+    sortedAt?: number,
+    
 }
+
 
 interface IDataTable {
     rowData: Array<any> | null,
     columnDefs: Array<DataTableColumnDefinition>,
-    onRowClick?: Function
+    onRowClick?: (e: RowClickedEvent) => void
     props?: any,
     onCellEditingStopped?: Function,
     isLoading?: boolean,
@@ -655,18 +676,21 @@ interface IDataTable {
     suppressColumnVirtualisation?: boolean
     tableref?: Ref<any>
     pageSize?: number,
-    paginationPageSizeSelector?: Array<number>
-    
+    paginationPageSizeSelector?: Array<number> | boolean,
+    onCellClicked?: (e: CellClickedEvent<any, any>) => void
+    rowClassName?: string
 }
 
 const table = tv({
-    base: 'h-fit w-full overflow-auto z-10'
+    base: 'h-fit w-full overflow-auto z-10 px-4 mt-2'
 })
 
 type tableProps = ComponentProps<'div'> & VariantProps<typeof table> & IDataTable
 
-const DataTable = forwardRef<HTMLDivElement, tableProps>(
-    ({ className, tableref, rowData, columnDefs, onRowClick, onCellEditingStopped, isLoading = false, rowSelection, pagination = true, suppressColumnVirtualisation = false, pageSize = 10, paginationPageSizeSelector = [10, 20, 30], ...props }, ref) => {
+export const DataTable = forwardRef<HTMLDivElement, tableProps>(
+    ({ className, tableref, rowData, columnDefs, onRowClick, onCellEditingStopped, rowClassName, isLoading = false, rowSelection, pagination = true, suppressColumnVirtualisation = false, pageSize = 10, paginationPageSizeSelector = [10, 20, 30], onCellClicked, ...props }, ref) => {
+
+
         return (
             <div className={table({ className })} ref={ref}>
                 <AgGridReact<any>
@@ -686,8 +710,10 @@ const DataTable = forwardRef<HTMLDivElement, tableProps>(
                     loading={isLoading}
                     rowSelection={rowSelection && rowSelection}
                     suppressDragLeaveHidesColumns={true}
-                    rowClass={onRowClick ? 'cursor-pointer' : ''}
+                    rowClass={cn(`${onRowClick ? 'cursor-pointer' : ''} `, rowClassName)}
                     suppressColumnVirtualisation={suppressColumnVirtualisation}
+                    onCellClicked={onCellClicked && onCellClicked}
+                    tooltipShowMode="standard"
                     {...props}
                 />
             </div>
@@ -695,4 +721,4 @@ const DataTable = forwardRef<HTMLDivElement, tableProps>(
     }
 )
 
-export default DataTable
+export default memo(DataTable)
